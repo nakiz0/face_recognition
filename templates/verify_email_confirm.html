@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width:440px;margin:60px auto;">
+  <div class="card">
+    <h2 style="text-align:center">✉️ Email Verification</h2>
+    {% if message %}
+      <div style="background: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 16px; text-align: center;">
+        {{ message }}
+      </div>
+      <p style="text-align:center;margin-top:20px;">
+        <a href="{{ url_for('login') }}" style="color: #1e88e5; text-decoration: none; font-weight: 600;">Go to Login</a>
+      </p>
+    {% endif %}
+    
+    {% if error %}
+      <div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 16px; text-align: center;">
+        {{ error }}
+      </div>
+      <p style="text-align:center;margin-top:20px;">
+        <a href="{{ url_for('register') }}" style="color: #1e88e5; text-decoration: none; font-weight: 600;">Back to Register</a>
+      </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

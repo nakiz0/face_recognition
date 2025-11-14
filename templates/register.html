@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width: 500px; margin: 40px auto;">
+  <div class="card">
+    <h2 style="text-align: center; color: #1a2332; margin-bottom: 8px;">📝 Create Account</h2>
+    <p style="text-align: center; color: #666; margin-bottom: 24px;">Register as a new user</p>
+
+    {% if error %}
+      <div class="error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    {% if message %}
+      <div style="background: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 16px; text-align: center;">
+        {{ message }}
+      </div>
+      <p style="text-align:center;margin-top:12px;">
+        <a href="{{ url_for('login') }}" style="color: #1e88e5; text-decoration: none; font-weight: 600;">Go to Login</a>
+      </p>
+    {% else %}
+    <form method="post">
+      <label>Username *</label>
+      <input type="text" name="username" placeholder="Choose a unique username" required>
+
+      <label>Password *</label>
+      <input type="password" name="password" placeholder="Enter a secure password" required>
+
+      <label>Email</label>
+      <input type="email" name="email" placeholder="your.email@example.com">
+
+      <label>Role *</label>
+      <select name="role" required>
+        <option value="">-- Select Role --</option>
+        <option value="student">👤 Student</option>
+        <option value="teacher">👨‍🏫 Teacher</option>
+        <option value="admin">👨‍💼 Administrator</option>
+      </select>
+
+      <button type="submit" style="width: 100%; text-align: center;">✅ Create Account</button>
+    </form>
+
+    <p style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+      Already have an account? <a href="{{ url_for('login') }}" style="color: #1e88e5; text-decoration: none; font-weight: 600;">Login here</a>
+    </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

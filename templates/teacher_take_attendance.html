@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📸 Take Attendance</h2>
+
+<div class="card">
+  <p style="margin-bottom: 16px; font-size: 16px;">
+    <strong>Current Subject:</strong> <span style="color: #1e88e5; font-weight: 600;">{{ subject or 'Not in scheduled time' }}</span>
+  </p>
+
+  <div id="videoContainer"></div>
+
+  <div style="display: flex; gap: 12px; margin-top: 16px;">
+    <button id="startBtn" style="align-self: auto;">▶️ Start Face Recognition</button>
+    <button id="liveTrainBtn" style="align-self: auto;">🎓 Train New Student</button>
+  </div>
+
+  <div id="log"></div>
+</div>
+
+<script src="{{ url_for('static', filename='js/client_recog.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin_train.js') }}"></script>
+<script>
+const subject = '{{ subject }}';
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  const log = document.getElementById('log');
+  log.innerText = '⏳ Starting face recognition...';
+  log.style.color = '#0c5460';
+
+  startRecognition(subject, (res) => {
+    if (res.marked) {
+      log.innerText = `✅ Marked ${res.username} for ${subject}`;
+      log.style.color = '#155724';
+      log.style.background = '#d4edda';
+    } else {
+      log.innerText = `❌ No match: ${res.reason || 'Unknown'}`;
+      log.style.color = '#721c24';
+      log.style.background = '#f8d7da';
+    }
+  });
+});
+
+document.getElementById('liveTrainBtn').addEventListener('click', async () => {
+  const username = prompt('Enter username to train (must exist in system):');
+  if (!username) return;
+
+  try {
+    const r = await captureAndTrain(username, 6);
+    if (r.ok) {
+      alert(`✅ Successfully saved ${r.saved} training frames for ${username}`);
+    } else {
+      alert(`❌ Error: ${r.error}`);
+    }
+  } catch (e) {
+    alert(`❌ Error: ${e.message}`);
+  }
+});
+</script>
+{% endblock %}
